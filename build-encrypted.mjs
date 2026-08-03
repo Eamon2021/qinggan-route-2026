@@ -54,6 +54,163 @@ sourceHtml = sourceHtml
   .replace(
     "map.setStyle(styleUrls[theme]);",
     "map.setStyle(fallbackActivated ? fallbackStyle(theme) : styleUrls[theme]);",
+  )
+  .replace("'Noto Sans CJK SC Regular'", "'Noto Sans Regular'");
+
+const mobileEnhancementStyles = String.raw`
+    .sheet-toggle { display: none; }
+
+    @media (max-width: 900px) {
+      :root {
+        --mobile-edge: max(8px, env(safe-area-inset-left));
+        --sheet-expanded: calc(100dvh - max(8px, env(safe-area-inset-top)) - 104px);
+        --sheet-default: clamp(270px, 42dvh, 360px);
+        --sheet-visible: var(--sheet-default);
+      }
+      body[data-sheet-state="collapsed"] { --sheet-visible: 88px; }
+      body[data-sheet-state="expanded"] { --sheet-visible: var(--sheet-expanded); }
+      html, body { height: 100dvh; min-height: 100dvh; overscroll-behavior: none; }
+      body { position: fixed; inset: 0; width: 100%; touch-action: manipulation; }
+      main { position: fixed; inset: 0; width: 100%; height: 100dvh; overflow: clip; }
+      #map { height: 100dvh; }
+      .masthead {
+        top: max(8px, env(safe-area-inset-top)); left: 8px; right: 8px; width: auto;
+        padding: 10px 12px 9px; border-radius: 16px;
+      }
+      .eyebrow { gap: 6px; font-size: 10.5px; letter-spacing: .045em; }
+      .eyebrow-dot { width: 6px; height: 6px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent); }
+      .masthead h1 { margin: 5px 0 0; font-size: 16px; line-height: 1.25; letter-spacing: -.015em; }
+      .masthead p, .route-alert { display: none; }
+      .metric-row { margin-top: 7px; padding-top: 6px; flex-wrap: nowrap; }
+      .metric { min-width: 0; margin-right: 10px; padding-right: 10px; }
+      .metric strong { font-size: 13px; line-height: 1.2; }
+      .metric span { display: none; }
+
+      .panel {
+        top: auto; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); width: auto;
+        height: var(--sheet-expanded); border-radius: 16px;
+        transform: translateY(calc(var(--sheet-expanded) - var(--sheet-visible)));
+        transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+        will-change: transform;
+      }
+      .panel-head { min-height: 76px; align-items: flex-start; padding: 14px 12px 10px; }
+      .panel-head > div:first-child { min-width: 0; }
+      .panel-kicker { font-size: 10px; }
+      .panel-title { margin-top: 3px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .panel-subtitle { margin-top: 3px; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .sheet-toggle {
+        display: inline-grid; flex: 0 0 auto; min-width: 58px; min-height: 44px; place-items: center;
+        border: 1px solid var(--line); border-radius: 12px; padding: 0 10px;
+        color: var(--text); background: var(--surface-solid); font-size: 11px; font-weight: 650; cursor: pointer;
+      }
+      .icon-button[hidden] { display: none !important; }
+      .sheet-toggle:active, .icon-button:active, .map-tool:active, .day-button:active, .tab:active, .action:active { transform: scale(.98); }
+      .icon-button { width: 44px; height: 44px; border-radius: 12px; }
+      .tabs { margin: 7px 10px 0; padding: 3px; }
+      .tab { min-height: 44px; padding: 8px 6px; }
+      .panel-body { padding: 10px 12px 22px; }
+      .panel-foot { padding: 8px 10px max(8px, env(safe-area-inset-bottom)); }
+      .panel-foot .action { min-height: 44px; }
+      .foot-note { display: none; }
+      body[data-sheet-state="collapsed"] .panel-subtitle,
+      body[data-sheet-state="collapsed"] .tabs,
+      body[data-sheet-state="collapsed"] .panel-body,
+      body[data-sheet-state="collapsed"] .panel-foot { visibility: hidden; opacity: 0; pointer-events: none; }
+      body[data-sheet-state="collapsed"] .panel-head { min-height: 88px; align-items: center; border-bottom-color: transparent; }
+
+      .daybar {
+        left: 8px; right: 8px; bottom: calc(max(8px, env(safe-area-inset-bottom)) + var(--sheet-visible) + 8px);
+        max-width: none; padding: 4px; border-radius: 14px; scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+        transition: bottom .28s cubic-bezier(.22, 1, .36, 1), opacity .18s ease, transform .18s ease;
+        mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
+      }
+      .day-button { min-height: 44px; padding: 9px 12px; scroll-snap-align: center; }
+      body[data-sheet-state="expanded"] .daybar { opacity: 0; transform: translateY(8px); pointer-events: none; }
+      .map-tools { top: calc(max(8px, env(safe-area-inset-top)) + 98px); left: 8px; gap: 6px; }
+      .map-tool { width: 44px; height: 44px; border-radius: 12px; }
+      .map-key, .maplibregl-ctrl-bottom-right { display: none; }
+      .overview-item { min-height: 66px; }
+      .action { min-height: 44px; }
+    }
+
+    @media (max-width: 520px) {
+      .metric:nth-child(3) { display: block; }
+      .panel-foot .action { padding: 8px 10px; }
+      .panel-foot .action span { display: inline; }
+      .day-summary { gap: 6px; }
+    }
+
+    @media (max-width: 370px) {
+      .metric:nth-child(3) { display: none; }
+      .sheet-toggle { min-width: 52px; padding-inline: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .daybar { transition: none !important; }
+    }
+`;
+
+sourceHtml = sourceHtml
+  .replace("</style>", `${mobileEnhancementStyles}\n  </style>`)
+  .replace(
+    '        <button class="icon-button" id="close-detail"',
+    '        <button class="sheet-toggle" id="sheet-toggle" type="button" aria-label="展开完整详情" aria-controls="panel-body"><span id="sheet-toggle-label">展开</span></button>\n        <button class="icon-button" id="close-detail"',
+  )
+  .replace(
+    "function fitAll(){ map.fitBounds(allBounds,{ padding:{ top:150,right:430,bottom:80,left:70 }, duration:700, maxZoom:5.4 }); }\n    function fitDay(day){\n      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(c); });\n      map.fitBounds(b,{ padding:{ top:125,right:430,bottom:80,left:70 }, duration:700, maxZoom:8.3 });\n    }",
+    `function mapPadding(){
+      if(!window.matchMedia('(max-width: 900px)').matches) return { top:150,right:430,bottom:80,left:70 };
+      const state=document.body.dataset.sheetState || 'default';
+      const defaultHeight=Math.min(360,Math.max(270,window.innerHeight*.42));
+      const visibleHeight=state==='collapsed' ? 88 : state==='expanded' ? window.innerHeight-104 : defaultHeight;
+      return { top:112,right:28,bottom:Math.max(128,visibleHeight+64),left:28 };
+    }
+    function fitAll(){ map.fitBounds(allBounds,{ padding:mapPadding(), duration:700, maxZoom:5.4 }); }
+    function fitDay(day){
+      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(c); });
+      map.fitBounds(b,{ padding:mapPadding(), duration:700, maxZoom:8.3 });
+    }`,
+  )
+  .replace(
+    "selectedDay=id; selectedTab='route';",
+    "selectedDay=id; selectedTab='route'; ensureSheetVisible();",
+  )
+  .replace(
+    "      updateOpacity(); renderPanel();\n      if(!skipFit)",
+    `      updateOpacity(); renderPanel();
+      const activeDayButton=document.querySelector('.day-button[data-day="'+id+'"]');
+      if(activeDayButton){
+        const target=id==='all' ? 0 : activeDayButton.offsetLeft-(daybar.clientWidth-activeDayButton.offsetWidth)/2;
+        daybar.scrollTo({ left:Math.max(0,target), behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth' });
+      }
+      const pageRoot=document.querySelector('main');
+      document.body.scrollTop=0; document.documentElement.scrollTop=0; pageRoot.scrollTop=0;
+      window.requestAnimationFrame(function(){ document.body.scrollTop=0; document.documentElement.scrollTop=0; pageRoot.scrollTop=0; });
+      if(!skipFit)`,
+  )
+  .replace(
+    "    function renderPrint(){",
+    `    const sheetToggle=document.getElementById('sheet-toggle');
+    const sheetToggleLabel=document.getElementById('sheet-toggle-label');
+    const sheetFlow={ collapsed:{next:'default',label:'详情',aria:'显示行程详情'}, default:{next:'expanded',label:'展开',aria:'展开完整详情'}, expanded:{next:'collapsed',label:'地图',aria:'收起详情只看地图'} };
+    function setSheetState(state){
+      if(!sheetFlow[state]) state='default';
+      document.body.dataset.sheetState=state;
+      sheetToggle.dataset.state=state;
+      sheetToggleLabel.textContent=sheetFlow[state].label;
+      sheetToggle.setAttribute('aria-label',sheetFlow[state].aria);
+      sheetToggle.setAttribute('aria-expanded',String(state!=='collapsed'));
+      window.setTimeout(function(){ if(mapReady) map.resize(); },300);
+    }
+    function ensureSheetVisible(){
+      if(window.matchMedia('(max-width: 900px)').matches && document.body.dataset.sheetState==='collapsed') setSheetState('default');
+    }
+    sheetToggle.addEventListener('click',function(){ const current=document.body.dataset.sheetState || 'default'; setSheetState(sheetFlow[current].next); });
+    setSheetState('default');
+
+    function renderPrint(){`,
   );
 
 const salt = crypto.randomBytes(16);
