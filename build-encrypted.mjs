@@ -26,37 +26,6 @@ sourceHtml = sourceHtml
     "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js",
     "./vendor/maplibre-gl.js",
   )
-  .replace(
-    "const styleUrls = { light: 'https://tiles.openfreemap.org/styles/liberty', dark: 'https://tiles.openfreemap.org/styles/dark' };",
-    `const styleUrls = { light: 'https://tiles.openfreemap.org/styles/liberty', dark: 'https://tiles.openfreemap.org/styles/dark' };
-    let fallbackActivated = false;
-    function fallbackStyle(mode) {
-      return { version:8, sources:{}, layers:[{ id:'offline-background', type:'background', paint:{ 'background-color': mode === 'dark' ? '#17201c' : '#e5ece6' } }] };
-    }`,
-  )
-  .replace(
-    "if (!map.getLayer('point-label')) map.addLayer",
-    "if (!fallbackActivated && !map.getLayer('point-label')) map.addLayer",
-  )
-  .replace(
-    "map.on('load', function(){\n      mapReady=true; addLayers(); fitAll();",
-    "map.on('load', function(){\n      mapReady=true; clearTimeout(mapFallbackTimer); addLayers(); fitAll();",
-  )
-  .replace(
-    "map.on('error', function(e){ if(e && e.error) console.warn('Map resource:', e.error.message); });",
-    `const mapFallbackTimer = setTimeout(function(){
-      if (!mapReady) {
-        fallbackActivated = true;
-        map.setStyle(fallbackStyle(theme));
-      }
-    }, 6500);
-    map.on('error', function(e){ if(e && e.error) console.warn('Map resource:', e.error.message); });`,
-  )
-  .replace(
-    "map.setStyle(styleUrls[theme]);",
-    "map.setStyle(fallbackActivated ? fallbackStyle(theme) : styleUrls[theme]);",
-  )
-  .replace("'Noto Sans CJK SC Regular'", "'Noto Sans Regular'")
   .replace("2026 · 8月8日至14日 · 7天6晚", "2026年8月8日至14日 · 7天6晚");
 
 const mobileEnhancementStyles = String.raw`
@@ -172,17 +141,17 @@ sourceHtml = sourceHtml
     '        <button class="sheet-toggle" id="sheet-toggle" type="button" aria-label="展开完整详情" aria-controls="panel-body"><span id="sheet-toggle-label">展开</span></button>\n        <button class="icon-button" id="close-detail"',
   )
   .replace(
-    "function fitAll(){ map.fitBounds(allBounds,{ padding:{ top:150,right:430,bottom:80,left:70 }, duration:700, maxZoom:5.4 }); }\n    function fitDay(day){\n      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(c); });\n      map.fitBounds(b,{ padding:{ top:125,right:430,bottom:80,left:70 }, duration:700, maxZoom:8.3 });\n    }",
+    "function fitAll(){ map.fitBounds(allBounds,{ padding:{ top:150,right:430,bottom:80,left:70 }, duration:700, maxZoom:5.4 }); }\n    function fitDay(day){\n      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(wgs84ToGcj02(c)); });\n      map.fitBounds(b,{ padding:{ top:125,right:430,bottom:80,left:70 }, duration:700, maxZoom:8.3 });\n    }",
     `function mapPadding(){
       if(!window.matchMedia('(max-width: 900px)').matches) return { top:150,right:430,bottom:80,left:70 };
       const state=document.body.dataset.sheetState || 'default';
       const defaultHeight=Math.min(360,Math.max(270,window.innerHeight*.42));
       const visibleHeight=state==='collapsed' ? 88 : state==='expanded' ? window.innerHeight-104 : defaultHeight;
-      return { top:112,right:28,bottom:Math.max(128,visibleHeight+64),left:28 };
+      return { top:112,right:64,bottom:Math.max(128,visibleHeight+64),left:64 };
     }
     function fitAll(){ map.fitBounds(allBounds,{ padding:mapPadding(), duration:700, maxZoom:5.4 }); }
     function fitDay(day){
-      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(c); });
+      const b=new maplibregl.LngLatBounds(); day.geometry.forEach(function(c){ b.extend(wgs84ToGcj02(c)); });
       map.fitBounds(b,{ padding:mapPadding(), duration:700, maxZoom:8.3 });
     }`,
   )
