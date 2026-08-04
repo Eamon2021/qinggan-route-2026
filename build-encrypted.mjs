@@ -17,6 +17,7 @@ const outputPath = path.resolve(outputArgument);
 let sourceHtml = fs.readFileSync(sourcePath, "utf8");
 
 sourceHtml = sourceHtml
+  .replace("</title>", "</title>\n  <link rel=\"icon\" href=\"data:,\">")
   .replace(
     "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css",
     "./vendor/maplibre-gl.css",
@@ -55,7 +56,8 @@ sourceHtml = sourceHtml
     "map.setStyle(styleUrls[theme]);",
     "map.setStyle(fallbackActivated ? fallbackStyle(theme) : styleUrls[theme]);",
   )
-  .replace("'Noto Sans CJK SC Regular'", "'Noto Sans Regular'");
+  .replace("'Noto Sans CJK SC Regular'", "'Noto Sans Regular'")
+  .replace("2026 · 8月8日至14日 · 7天6晚", "2026年8月8日至14日 · 7天6晚");
 
 const mobileEnhancementStyles = String.raw`
     .sheet-toggle { display: none; }
@@ -77,8 +79,8 @@ const mobileEnhancementStyles = String.raw`
         top: max(8px, env(safe-area-inset-top)); left: 8px; right: 8px; width: auto;
         padding: 10px 12px 9px; border-radius: 16px;
       }
-      .eyebrow { gap: 6px; font-size: 10.5px; letter-spacing: .045em; }
-      .eyebrow-dot { width: 6px; height: 6px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent); }
+      .eyebrow { gap: 0; font-size: 10.5px; letter-spacing: .035em; }
+      .eyebrow-dot { display: none; }
       .masthead h1 { margin: 5px 0 0; font-size: 16px; line-height: 1.25; letter-spacing: -.015em; }
       .masthead p, .route-alert { display: none; }
       .metric-row { margin-top: 7px; padding-top: 6px; flex-wrap: nowrap; }
@@ -93,7 +95,15 @@ const mobileEnhancementStyles = String.raw`
         transition: transform .28s cubic-bezier(.22, 1, .36, 1);
         will-change: transform;
       }
-      .panel-head { min-height: 76px; align-items: flex-start; padding: 14px 12px 10px; }
+      .panel::before {
+        content: ''; position: absolute; z-index: 3; top: 6px; left: 50%; width: 32px; height: 4px;
+        border-radius: 999px; background: color-mix(in srgb, var(--muted) 42%, transparent);
+        transform: translateX(-50%); pointer-events: none;
+      }
+      .panel-head {
+        display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px;
+        min-height: 76px; align-items: flex-start; padding: 16px 12px 10px;
+      }
       .panel-head > div:first-child { min-width: 0; }
       .panel-kicker { font-size: 10px; }
       .panel-title { margin-top: 3px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -101,7 +111,7 @@ const mobileEnhancementStyles = String.raw`
       .sheet-toggle {
         display: inline-grid; flex: 0 0 auto; min-width: 58px; min-height: 44px; place-items: center;
         border: 1px solid var(--line); border-radius: 12px; padding: 0 10px;
-        color: var(--text); background: var(--surface-solid); font-size: 11px; font-weight: 650; cursor: pointer;
+        color: var(--accent); background: var(--accent-soft); font-size: 11px; font-weight: 650; cursor: pointer;
       }
       .icon-button[hidden] { display: none !important; }
       .sheet-toggle:active, .icon-button:active, .map-tool:active, .day-button:active, .tab:active, .action:active { transform: scale(.98); }
@@ -126,9 +136,11 @@ const mobileEnhancementStyles = String.raw`
         mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
         -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
       }
+      .daybar::after { content: ''; flex: 0 0 calc(50% - 42px); height: 1px; }
       .day-button { min-height: 44px; padding: 9px 12px; scroll-snap-align: center; }
+      .day-button[aria-pressed="true"] { box-shadow: 0 3px 10px color-mix(in srgb, var(--accent) 24%, transparent); }
       body[data-sheet-state="expanded"] .daybar { opacity: 0; transform: translateY(8px); pointer-events: none; }
-      .map-tools { top: calc(max(8px, env(safe-area-inset-top)) + 98px); left: 8px; gap: 6px; }
+      .map-tools { top: calc(max(8px, env(safe-area-inset-top)) + 98px); left: auto; right: 8px; gap: 6px; }
       .map-tool { width: 44px; height: 44px; border-radius: 12px; }
       .map-key, .maplibregl-ctrl-bottom-right { display: none; }
       .overview-item { min-height: 66px; }
@@ -144,6 +156,7 @@ const mobileEnhancementStyles = String.raw`
 
     @media (max-width: 370px) {
       .metric:nth-child(3) { display: none; }
+      .metric:nth-child(2) { margin-right: 0; padding-right: 0; border-right: 0; }
       .sheet-toggle { min-width: 52px; padding-inline: 8px; }
     }
 
@@ -236,6 +249,7 @@ const page = `<!doctype html>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#e8eee9">
   <title>青甘大环线 2026 · 访问验证</title>
+  <link rel="icon" href="data:,">
   <style>
     :root{color-scheme:light;--ink:#17231d;--muted:#68736c;--green:#1f6a52;--line:rgba(23,35,29,.13)}
     *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:var(--ink);background:#e8eee9}
@@ -245,12 +259,13 @@ const page = `<!doctype html>
     .pin{position:absolute;right:27px;top:26px;width:38px;height:38px;border:1px solid rgba(31,106,82,.18);border-radius:50% 50% 50% 12px;background:#dcebe4;transform:rotate(45deg)}.pin:after{content:"";position:absolute;inset:11px;border:3px solid var(--green);border-radius:50%}
     .eyebrow{display:flex;align-items:center;gap:9px;margin:0;color:var(--green);font-size:12px;font-weight:700;letter-spacing:.08em}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(31,106,82,.12)}
     h1{margin:19px 0 9px;font-size:clamp(25px,7vw,33px);line-height:1.24;letter-spacing:-.035em}p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
-    .facts{display:flex;flex-wrap:wrap;gap:8px 14px;margin:20px 0;padding:15px 0;border-block:1px solid var(--line);color:var(--muted);font-size:11px}
+    .facts{display:flex;flex-wrap:wrap;gap:8px 14px;margin:20px 0;padding:15px 0;border-block:1px solid var(--line);color:var(--muted);font-size:12px}
     label{display:block;margin-bottom:8px;color:var(--muted);font-size:12px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}
     input{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--ink);background:white;letter-spacing:.28em;outline:none}input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(31,106,82,.14)}
     button{border:0;border-radius:12px;padding:13px 18px;color:#f7fffb;background:var(--green);font-weight:650;cursor:pointer}button:disabled{opacity:.65;cursor:wait}
-    .status{min-height:20px;margin-top:9px;color:#9b4d32;font-size:12px}.note{margin-top:9px;font-size:11px}
+    .status{min-height:20px;margin-top:9px;color:#9b4d32;font-size:12px}.note{margin-top:9px;font-size:12px}
     @media(max-width:470px){.card{padding:25px 20px;border-radius:19px}.row{grid-template-columns:1fr}.row button{width:100%}}
+    @media(max-width:350px){h1{font-size:23px}}
   </style>
 </head>
 <body>
