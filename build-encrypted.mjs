@@ -40,22 +40,11 @@ const mobileEnhancementStyles = String.raw`
       }
       body[data-sheet-state="collapsed"] { --sheet-visible: 88px; }
       body[data-sheet-state="expanded"] { --sheet-visible: var(--sheet-expanded); }
-      html, body { height: 100dvh; min-height: 100dvh; overscroll-behavior: none; }
+      html, body { height: 100dvh; min-height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
       body { position: fixed; inset: 0; width: 100%; touch-action: manipulation; }
       main { position: fixed; inset: 0; width: 100%; height: 100dvh; overflow: clip; }
-      #map { height: 100dvh; }
-      .masthead {
-        top: max(8px, env(safe-area-inset-top)); left: 8px; right: 8px; width: auto;
-        padding: 10px 12px 9px; border-radius: 16px;
-      }
-      .eyebrow { gap: 0; font-size: 10.5px; letter-spacing: .035em; }
-      .eyebrow-dot { display: none; }
-      .masthead h1 { margin: 5px 0 0; font-size: 16px; line-height: 1.25; letter-spacing: -.015em; }
-      .masthead p, .route-alert { display: none; }
-      .metric-row { margin-top: 7px; padding-top: 6px; flex-wrap: nowrap; }
-      .metric { min-width: 0; margin-right: 10px; padding-right: 10px; }
-      .metric strong { font-size: 13px; line-height: 1.2; }
-      .metric span { display: none; }
+      #map { height: 100dvh; touch-action: none; }
+      .masthead { display: none; }
 
       .panel {
         top: auto; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); width: auto;
@@ -109,23 +98,22 @@ const mobileEnhancementStyles = String.raw`
       .day-button { min-height: 44px; padding: 9px 12px; scroll-snap-align: center; }
       .day-button[aria-pressed="true"] { box-shadow: 0 3px 10px color-mix(in srgb, var(--accent) 24%, transparent); }
       body[data-sheet-state="expanded"] .daybar { opacity: 0; transform: translateY(8px); pointer-events: none; }
-      .map-tools { top: calc(max(8px, env(safe-area-inset-top)) + 98px); left: auto; right: 8px; gap: 6px; }
+      .map-tools { top: max(8px, env(safe-area-inset-top)); left: auto; right: 8px; gap: 6px; }
       .map-tool { width: 44px; height: 44px; border-radius: 12px; }
       .map-key, .maplibregl-ctrl-bottom-right { display: none; }
+      .basemap-credit { top: max(10px, env(safe-area-inset-top)); left: 8px; right: auto; }
+      .poi-label { font-size: 10px; line-height: 1.2; }
       .overview-item { min-height: 66px; }
       .action { min-height: 44px; }
     }
 
     @media (max-width: 520px) {
-      .metric:nth-child(3) { display: block; }
       .panel-foot .action { padding: 8px 10px; }
       .panel-foot .action span { display: inline; }
       .day-summary { gap: 6px; }
     }
 
     @media (max-width: 370px) {
-      .metric:nth-child(3) { display: none; }
-      .metric:nth-child(2) { margin-right: 0; padding-right: 0; border-right: 0; }
       .sheet-toggle { min-width: 52px; padding-inline: 8px; }
     }
 
@@ -147,7 +135,7 @@ sourceHtml = sourceHtml
       const state=document.body.dataset.sheetState || 'default';
       const defaultHeight=Math.min(360,Math.max(270,window.innerHeight*.42));
       const visibleHeight=state==='collapsed' ? 88 : state==='expanded' ? window.innerHeight-104 : defaultHeight;
-      return { top:112,right:64,bottom:Math.max(128,visibleHeight+64),left:64 };
+      return { top:40,right:56,bottom:Math.max(128,visibleHeight+64),left:56 };
     }
     function fitAll(){ map.fitBounds(allBounds,{ padding:mapPadding(), duration:700, maxZoom:5.4 }); }
     function fitDay(day){
@@ -221,7 +209,7 @@ const page = `<!doctype html>
   <link rel="icon" href="data:,">
   <style>
     :root{color-scheme:light;--ink:#17231d;--muted:#68736c;--green:#1f6a52;--line:rgba(23,35,29,.13)}
-    *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:var(--ink);background:#e8eee9}
+    *{box-sizing:border-box}html,body{min-height:100%;margin:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:var(--ink);background:#e8eee9}
     main{position:relative;display:grid;min-height:100vh;min-height:100dvh;place-items:center;overflow:hidden;padding:20px;background:radial-gradient(circle at 12% 16%,rgba(48,132,94,.18),transparent 31%),radial-gradient(circle at 88% 82%,rgba(202,124,46,.14),transparent 29%),linear-gradient(150deg,#eef4ef,#e5ece7 52%,#f1ece4)}
     main:before,main:after{content:"";position:absolute;width:72vw;height:210px;border:2px solid rgba(31,106,82,.14);border-radius:50%;transform:rotate(-12deg)}main:before{left:-22vw;top:18%}main:after{right:-25vw;bottom:10%;transform:rotate(14deg)}
     .card{position:relative;z-index:1;width:min(430px,100%);padding:30px;border:1px solid var(--line);border-radius:24px;background:rgba(251,253,250,.94);box-shadow:0 24px 72px rgba(25,47,36,.18);backdrop-filter:blur(20px)}
