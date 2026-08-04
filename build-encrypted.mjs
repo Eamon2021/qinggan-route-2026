@@ -275,7 +275,7 @@ const page = `<!doctype html>
       <p class="eyebrow">2026 · 8月8日至14日</p>
       <h1>青甘大环线七日路线图</h1>
       <p>路线、景区停留、住宿、加油和返程安排。</p>
-      <div class="facts"><span>7天6晚</span><span>约3067公里</span><span>加密静态备份</span></div>
+      <div class="facts"><span>7天6晚</span><span>约2962公里</span><span>加密静态备份</span></div>
       <form id="unlock-form">
         <label for="password">访问密码</label>
         <div class="row">
