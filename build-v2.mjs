@@ -38,34 +38,31 @@ const page = `<!doctype html>
   <title>青甘六日自驾 · 访问验证</title>
   <link rel="icon" href="data:,">
   <style>
-    :root{color-scheme:light;--ink:#17221c;--muted:#65716a;--green:#1d6b50;--line:rgba(23,34,28,.13)}
+    :root{color-scheme:light;--ink:#17221c;--muted:#65716a;--green:#1d6b50;--line:rgba(23,34,28,.13);--paper:#fbfcf9}
     *{box-sizing:border-box}html,body{min-height:100%;margin:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}
     body{font-family:"Microsoft YaHei UI","PingFang SC",system-ui,sans-serif;color:var(--ink);background:#e8eee9}
-    main{position:relative;display:grid;min-height:100vh;min-height:100dvh;place-items:center;overflow:hidden;padding:20px;background:radial-gradient(circle at 15% 15%,rgba(29,107,80,.17),transparent 30%),radial-gradient(circle at 86% 84%,rgba(194,138,34,.15),transparent 28%),linear-gradient(145deg,#eff4ef,#e6ede8 54%,#f1ece4)}
-    main::before{content:"";position:absolute;inset:12%;border:1px solid rgba(29,107,80,.13);border-radius:48% 52% 55% 45%;transform:rotate(-8deg)}
-    .card{position:relative;z-index:1;width:min(420px,100%);padding:28px;border:1px solid var(--line);border-radius:22px;background:rgba(251,252,249,.95);box-shadow:0 24px 70px rgba(24,42,33,.18);backdrop-filter:blur(18px)}
-    .dot{display:block;width:11px;height:11px;margin-bottom:20px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(29,107,80,.12)}
+    main{display:grid;min-height:100vh;min-height:100dvh;place-items:center;padding:20px;background:linear-gradient(145deg,#edf2ee,#e5ece7)}
+    .card{width:min(420px,100%);padding:30px 28px 27px;border:1px solid var(--line);border-top:3px solid var(--green);border-radius:19px;background:var(--paper);box-shadow:0 22px 58px rgba(24,42,33,.16)}
     .eyebrow{margin:0;color:var(--green);font-size:12px;font-weight:720;letter-spacing:.06em}
     h1{margin:8px 0 8px;font-size:clamp(25px,7vw,32px);line-height:1.24;letter-spacing:-.03em}
     p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
-    .facts{display:flex;gap:9px;margin:19px 0;padding:13px 0;border-block:1px solid var(--line);font-size:11px;color:var(--muted)}
-    .facts span{padding:5px 8px;border-radius:8px;background:#eef2ed}
-    label{display:block;margin-bottom:7px;color:var(--muted);font-size:11px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+    .facts{display:grid;grid-template-columns:repeat(3,1fr);margin:20px 0;padding:12px 0;border-block:1px solid var(--line);font-size:11px;color:var(--muted)}
+    .facts span{text-align:center}.facts span+span{border-left:1px solid var(--line)}
+    label{display:block;margin-bottom:7px;color:var(--muted);font-size:12px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
     input{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--ink);background:white;font-size:16px;letter-spacing:.26em;outline:none}
     input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,107,80,.14)}
-    button{min-height:48px;border:0;border-radius:12px;padding:12px 18px;color:white;background:var(--green);font-weight:680;cursor:pointer}button:disabled{opacity:.65;cursor:wait}
+    button{min-height:48px;border:0;border-radius:12px;padding:12px 18px;color:white;background:var(--green);font-size:13px;font-weight:680;cursor:pointer}button:disabled{opacity:.65;cursor:wait}
     .status{min-height:20px;margin-top:8px;color:#a44637;font-size:11px}.note{font-size:11px}
-    @media(max-width:450px){.card{padding:24px 19px;border-radius:18px}.row{grid-template-columns:1fr}.facts{flex-wrap:wrap}}
+    @media(max-width:450px){main{padding:16px}.card{padding:26px 19px 23px;border-radius:17px}.row{grid-template-columns:1fr}.facts{font-size:10px}}
   </style>
 </head>
 <body>
   <main>
     <section class="card">
-      <span class="dot" aria-hidden="true"></span>
-      <p class="eyebrow">2026 · 8月8日至13日</p>
-      <h1>青甘六日自驾路线</h1>
-      <p>高德逐段校准版，包含景区停留、住宿、加油和道路提醒。</p>
-      <div class="facts"><span>2,653 km</span><span>6天5晚</span><span>国内地图源</span></div>
+      <p class="eyebrow">2026年8月8日至13日</p>
+      <h1>青甘六日自驾地图</h1>
+      <p>包含真实路线、停留时间、住宿、加油和道路提醒。</p>
+      <div class="facts"><span>2,653公里</span><span>6天5晚</span><span>国内地图</span></div>
       <form id="unlock-form">
         <label for="password">访问密码</label>
         <div class="row">
