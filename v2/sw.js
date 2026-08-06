@@ -1,5 +1,5 @@
-const SHELL_CACHE = 'qinggan-route-shell-v6';
-const RUNTIME_CACHE = 'qinggan-route-runtime-v6';
+const SHELL_CACHE = 'qinggan-route-shell-v7';
+const RUNTIME_CACHE = 'qinggan-route-runtime-v7';
 const SHELL_ASSETS = [
   './',
   './route-geometry.json',
