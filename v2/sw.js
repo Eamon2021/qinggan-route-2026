@@ -1,5 +1,5 @@
-const SHELL_CACHE = 'qinggan-route-shell-v2';
-const RUNTIME_CACHE = 'qinggan-route-runtime-v2';
+const SHELL_CACHE = 'qinggan-route-shell-v3';
+const RUNTIME_CACHE = 'qinggan-route-runtime-v3';
 const SHELL_ASSETS = [
   './',
   './route-geometry.json',
@@ -10,7 +10,7 @@ const SHELL_ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    await Promise.allSettled(SHELL_ASSETS.map(asset => cache.add(new Request(asset, { cache: 'reload' }))));
+    await cache.addAll(SHELL_ASSETS.map(asset => new Request(asset, { cache: 'reload' })));
     await self.skipWaiting();
   })());
 });
@@ -19,7 +19,7 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keep = new Set([SHELL_CACHE, RUNTIME_CACHE]);
     const names = await caches.keys();
-    await Promise.all(names.filter(name => !keep.has(name)).map(name => caches.delete(name)));
+    await Promise.all(names.filter(name => name.startsWith('qinggan-route-') && !keep.has(name)).map(name => caches.delete(name)));
     await self.clients.claim();
   })());
 });
