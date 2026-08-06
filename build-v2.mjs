@@ -35,7 +35,7 @@ const page = `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#e8eee9">
-  <meta name="description" content="2026年8月8日至13日青甘六日自驾互动地图，包含真实路线、停留时间、住宿、加油和道路提醒。">
+  <meta name="description" content="2026年8月8日至13日青甘六日自驾互动地图，包含道路路线、停留时间、加油和行车提醒。">
   <title>青甘六日自驾 · 访问验证</title>
   <link rel="icon" href="data:,">
   <style>
@@ -62,8 +62,8 @@ const page = `<!doctype html>
     <section class="card">
       <p class="eyebrow">2026年8月8日至13日</p>
       <h1>青甘六日自驾地图</h1>
-      <p>包含真实路线、停留时间、住宿、加油和道路提醒。</p>
-      <div class="facts"><span>2,653公里</span><span>6天5晚</span><span>国内地图</span></div>
+      <p>包含道路路线、停留时间、加油和行车提醒。</p>
+      <div class="facts"><span>2,589公里</span><span>6天行程</span><span>西宁站取还</span></div>
       <form id="unlock-form">
         <label for="password">访问密码</label>
         <div class="row">
