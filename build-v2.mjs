@@ -63,7 +63,7 @@ const page = `<!doctype html>
       <p class="eyebrow">2026年8月8日至13日</p>
       <h1>青甘六日自驾地图</h1>
       <p>包含道路路线、停留时间、加油和行车提醒。</p>
-      <div class="facts"><span>2,589公里</span><span>6天行程</span><span>西宁站取还</span></div>
+      <div class="facts"><span>2,608公里</span><span>6天行程</span><span>西宁站取还</span></div>
       <form id="unlock-form">
         <label for="password">访问密码</label>
         <div class="row">
