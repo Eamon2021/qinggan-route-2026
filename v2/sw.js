@@ -1,5 +1,5 @@
-const SHELL_CACHE = 'qinggan-route-shell-v1';
-const RUNTIME_CACHE = 'qinggan-route-runtime-v1';
+const SHELL_CACHE = 'qinggan-route-shell-v2';
+const RUNTIME_CACHE = 'qinggan-route-runtime-v2';
 const SHELL_ASSETS = [
   './',
   './route-geometry.json',
@@ -35,7 +35,13 @@ self.addEventListener('fetch', event => {
     event.respondWith((async () => {
       try {
         const response = await fetch(request);
-        if (response.ok) (await caches.open(SHELL_CACHE)).put(request, response.clone());
+        if (response.ok) {
+          const cache = await caches.open(SHELL_CACHE);
+          await Promise.all([
+            cache.put(request, response.clone()),
+            cache.put('./', response.clone())
+          ]);
+        }
         return response;
       } catch (error) {
         return (await caches.open(SHELL_CACHE)).match('./', { ignoreSearch: true }) || Response.error();

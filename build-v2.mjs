@@ -35,6 +35,7 @@ const page = `<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#e8eee9">
+  <meta name="description" content="2026年8月8日至13日青甘六日自驾互动地图，包含真实路线、停留时间、住宿、加油和道路提醒。">
   <title>青甘六日自驾 · 访问验证</title>
   <link rel="icon" href="data:,">
   <style>
@@ -46,14 +47,14 @@ const page = `<!doctype html>
     .eyebrow{margin:0;color:var(--green);font-size:12px;font-weight:720;letter-spacing:.06em}
     h1{margin:8px 0 8px;font-size:clamp(25px,7vw,32px);line-height:1.24;letter-spacing:-.03em}
     p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
-    .facts{display:grid;grid-template-columns:repeat(3,1fr);margin:20px 0;padding:12px 0;border-block:1px solid var(--line);font-size:11px;color:var(--muted)}
+    .facts{display:grid;grid-template-columns:repeat(3,1fr);margin:20px 0;padding:12px 0;border-block:1px solid var(--line);font-size:12px;color:var(--muted)}
     .facts span{text-align:center}.facts span+span{border-left:1px solid var(--line)}
     label{display:block;margin-bottom:7px;color:var(--muted);font-size:12px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
     input{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--ink);background:white;font-size:16px;letter-spacing:.26em;outline:none}
     input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(29,107,80,.14)}
     button{min-height:48px;border:0;border-radius:12px;padding:12px 18px;color:white;background:var(--green);font-size:13px;font-weight:680;cursor:pointer}button:disabled{opacity:.65;cursor:wait}
-    .status{min-height:20px;margin-top:8px;color:#a44637;font-size:11px}.note{font-size:11px}
-    @media(max-width:450px){main{padding:16px}.card{padding:26px 19px 23px;border-radius:17px}.row{grid-template-columns:1fr}.facts{font-size:10px}}
+    .status{min-height:20px;margin-top:8px;color:#a44637;font-size:12px}.note{font-size:12px}
+    @media(max-width:450px){main{padding:16px}.card{padding:26px 19px 23px;border-radius:17px}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
